@@ -45,6 +45,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
   }, 
 {timestamps: true})
 
+
 userSchema.methods.generateJsonWebToken = function (this: IUser) {
   return jwt.sign(
     {
