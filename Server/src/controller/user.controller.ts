@@ -4,6 +4,7 @@ import { User } from '../model/user.model';
 import uploadOnCloudinary from '../utils/cloudinary';
 
 export const getProfile = asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    
     const { username } = req.params;
 
     try {
@@ -19,6 +20,7 @@ export const getProfile = asyncHandler(async (req: Request, res: Response): Prom
 });
 
 export const updateProfileDetails = asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    
     
         const { fullname, bio , username} = req.body;
         const userId = req.user?._id as string;

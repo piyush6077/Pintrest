@@ -4,6 +4,7 @@ import ConnectDB from './db/db'
 import authRouter from './route/auth.routes'
 import cookieParser from 'cookie-parser'
 import userRouter from './route/user.routes'
+import followRouter from './route/follow.route'
 dotenv.config()
 
 const app = express()
@@ -19,6 +20,7 @@ app.use(cookieParser())
 //route
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
+app.use("/api/v1/follow", followRouter)
 
 
 app.listen(PORT, ()=> {
