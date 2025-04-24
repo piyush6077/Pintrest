@@ -20,7 +20,7 @@ export const getProfile = asyncHandler(async (req: Request, res: Response): Prom
 });
 
 export const updateProfileDetails = asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    
+
     
         const { fullname, bio , username} = req.body;
         const userId = req.user?._id as string;
@@ -48,6 +48,7 @@ export const updateProfileDetails = asyncHandler(async (req: Request, res: Respo
 });
 
 export const updateProfilePicture = asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    
         const file = (req.files as any)?.profilePicture[0];
         const userId = req.user?._id;
         
