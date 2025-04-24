@@ -13,7 +13,7 @@ const notificationSchema: Schema<INotification> = new Schema(
         type:{
             type: String,
             required: true,
-            enum: ["like", "comment", "follow", "mention", "tag"],
+            enum: ["like", "comment", "follow"],
         },
         content:{
             type: String,
