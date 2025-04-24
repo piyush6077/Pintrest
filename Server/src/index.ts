@@ -6,11 +6,11 @@ import cookieParser from 'cookie-parser'
 import userRouter from './route/user.routes'
 import followRouter from './route/follow.route'
 import pinRouter from './route/pins.route'
+import boardRouter from './route/boards.route'
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT
-
 
 //middleware
 app.use(express.static("public")) 
@@ -23,6 +23,7 @@ app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/follow", followRouter)
 app.use("/api/v1/pin", pinRouter)
+app.use("/api/v1/boards", boardRouter)
 
 app.listen(PORT, ()=> {
     console.log(`server started at http://localhost:${PORT}`)
