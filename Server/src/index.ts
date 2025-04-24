@@ -8,6 +8,7 @@ import followRouter from './route/follow.route'
 import pinRouter from './route/pins.route'
 import boardRouter from './route/boards.route'
 import pinBoardRouter from './route/pinBoard.route'
+import likesRouter from './route/likes.route'
 dotenv.config()
 
 const app = express()
@@ -26,6 +27,8 @@ app.use("/api/v1/follow", followRouter)
 app.use("/api/v1/pin", pinRouter)
 app.use("/api/v1/boards", boardRouter)
 app.use("/api/v1/pinBoard", pinBoardRouter)
+app.use("/api/v1/likes", likesRouter)
+
 
 app.listen(PORT, ()=> {
     console.log(`server started at http://localhost:${PORT}`)
