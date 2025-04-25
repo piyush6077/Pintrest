@@ -2,6 +2,7 @@ import { Follow } from "../model/follow.model";
 import asyncHandler from "../utils/asyncHandler";
 import { Request, Response } from "express";
 import { User } from "../model/user.model";
+import { Notification } from "../model/notification.model";
 
 export const follow = asyncHandler(async (req: Request, res: Response): Promise<any> => {
 
@@ -12,10 +13,24 @@ export const follow = asyncHandler(async (req: Request, res: Response): Promise<
         return res.status(400).json({ message: "Invalid request" });
     }
 
+    const existing = await Follow.findOne({ followerId , followingId})
+    if(existing) {
+        return res.status(400).json({ message: "Already following" });
+    }
+
     const follow = await Follow.create({ followerId, followingId });
     if(!follow) {
         return res.status(400).json({ message: "Error following user" });
     }
+    //Todo:create Notification
+    const follower = await User.findById(followerId).select("username").lean();
+    await Notification.create({
+        type: "follow",
+        senderId: followerId,
+        receiverId: followingId,
+        content: `${follower?.username} followed you`,
+    })
+
 
     return res.status(200).json({ message: "User followed successfully", follow });
 });
@@ -30,6 +45,8 @@ export const unFollow = asyncHandler(async (req: Request, res: Response): Promis
     if(!unFollow) {
         return res.status(400).json({ message: "Error unfollowing user" });
     }
+    //Todo:create Notification
+
 
     return res.status(200).json({ message: "User unfollowed successfully", unFollow });
 });

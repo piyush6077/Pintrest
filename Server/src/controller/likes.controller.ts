@@ -1,6 +1,9 @@
 import { Like } from "../model/like.model"
 import asyncHandler from "../utils/asyncHandler"
 import { Request, Response } from "express"
+import { Notification } from "../model/notification.model"
+import { Pin } from "../model/pins.model"
+import { User } from "../model/user.model"
 
 export const likePin = asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const userId = req.user?._id as string
@@ -15,6 +18,25 @@ export const likePin = asyncHandler(async (req: Request, res: Response): Promise
         pinId,
         userId
     })
+
+    const pin = await Pin.findById(pinId).select("userId").lean()
+    if (!pin) {
+        return res.status(404).json({ message: "Pin not found" })
+    }
+
+    const user = await User.findById(userId).select("username").lean()
+    if (!user) {
+        return res.status(404).json({ message: "User not found" })
+    }
+
+    if(pin.userId.toString() !== userId)[
+        await Notification.create({
+            type: "like",
+            senderId: userId,
+            receiverId: pin.userId.toString(),
+            content: `${user?.username} liked your pin`,
+        })
+    ]
     
     return res.status(200).json({ message: "Pin liked" , like })
 })

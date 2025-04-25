@@ -2,6 +2,8 @@ import asyncHandler from "../utils/asyncHandler";
 import { Request, Response } from "express";
 import { Comment } from "../model/comment.model";
 import { Pin } from "../model/pins.model";
+import { Notification } from "../model/notification.model";
+import { User } from "../model/user.model";
 
 
 export const addComment = asyncHandler(async (req: Request, res: Response): Promise<any> => {
@@ -24,6 +26,23 @@ export const addComment = asyncHandler(async (req: Request, res: Response): Prom
         return res.status(400).json({ message: "Failed to add comment" })
     }
 
+
+    const user = await User.findById(userId).select("username").lean()
+    if (!user) {
+        return res.status(404).json({ message: "User not found" })
+    }
+
+    //Todo:create Notification
+    if(pin.userId.toString() !== userId) {
+        await Notification.create({
+            type: "comment",
+            senderId: userId,
+            receiverId: pin.userId.toString(),
+            content: `${user.username} commented on your pin`,
+        })
+    }
+
+    
     return res.status(200).json({ message: "Comment added successfully", newComment })
 })
 
